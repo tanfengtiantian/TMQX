@@ -1,0 +1,41 @@
+canal.conf:
+  canalServerHost: 118.190.87.31:11111
+  batchSize: 500
+  syncBatchSize: 1000
+  retries: 0
+  timeout:
+  accessKey:
+  secretKey:
+  mode: tcp
+  canalAdapters:
+  - instance: test # canal instance Name
+    subscribe: sc_shop.sc_shop_info,sc_user.sc_sys_backuser,sc_user.sc_charge_merchant,sc_shop.sc_member_card
+    groups:       # 一份数据可以被多个group同时消费, 多个group之间会是一个并行执行, 一个group内部是一个串行执行多个outerAdapters
+    - groupId: g1
+      outerAdapters:
+      - name: logger
+        key: loggerKey
+      - name: redis
+        key: redisKey
+        properties:
+          redis.pool.maxActive: 1024
+          redis.pool.maxIdle: 200
+          redis.pool.maxWait: 1000
+          redis.pool.testOnBorrow: true
+          redis.pool.testOnReturn: true
+          redis.ip: 139.129.167.239
+          redis.port: 6379
+          redis.password: myredis
+          redis.seconds: 10
+      - name: mqtt
+        key: mqttKey
+        properties:
+          mqtt.broker: tcp://mqtt.izxcs.com:1883
+          # mqtt.broker: tcp://127.0.0.1:1883
+          mqtt.username: TEST
+          mqtt.password: TEST
+          mqtt.basetopicStart: public/smartPhone/
+          mqtt.basetopicEnd: /info/
+          mqtt.qos: 1
+          mqtt.merchantIds: 1338
+          mqtt.retries: 2
