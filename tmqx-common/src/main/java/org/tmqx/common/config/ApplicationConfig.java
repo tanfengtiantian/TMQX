@@ -1,56 +1,53 @@
 package org.tmqx.common.config;
 
-import org.yaml.snakeyaml.Yaml;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.Map;
+import java.util.List;
 
 public class ApplicationConfig {
 
-    private static final String FILE_PREFIX = "file:/";
+    private String name;
 
-    private static final String APPLICATION_CONFIG = "application.yml";
+    private BrokerConfig broker;
 
-    public static final String FileSuffix = ".conf";
+    private NettyConfig netty;
 
-    public static void initialize() throws Exception {
-        Map map = new Yaml().loadAs(getFile(APPLICATION_CONFIG), Map.class);
-        //Map map = new Yaml().load(getFile(APPLICATION_CONFIG), Map.class));
-        System.out.println(map.size());
+    private List<PluginConfig> plugins;
 
+    public String getName() {
+        return name;
     }
 
-    private static FileInputStream getFile(String filename) throws FileNotFoundException {
-        String fullfilename = "";
-        if(filename == null || filename.length() <= 0){
-            throw new RuntimeException("conf file name can not be empty");
-        }
-        //说明是绝对路径
-        if(filename.indexOf(":")>-1 || filename.indexOf("/")>-1 || filename.indexOf("\\")>-1 ){
-            fullfilename = filename;
-        }else{
-            fullfilename = getFullfilename(filename);
-        }
-
-        return new FileInputStream(fullfilename);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    private static String getFullfilename(String filename){
-        try{
-            URL url = ApplicationConfig.class.getClassLoader().getResource(filename);
-            String urlstring = url.toString();
-            if(urlstring.startsWith(FILE_PREFIX)){
-                urlstring = urlstring.substring(FILE_PREFIX.length());
-                if(urlstring.indexOf(":")<0){
-                    urlstring = "/"+urlstring;
-                }
-            }
-            return urlstring;
-        }catch(Throwable e){
-            throw new RuntimeException("can not find file:"+filename, e);
+    public List<PluginConfig> getPlugins() {
+        return plugins;
+    }
+
+    public void setPlugins(List<PluginConfig> plugins) {
+        this.plugins = plugins;
+        if(plugins != null) {
+            plugins.forEach(p-> p.setRoot(this));
         }
     }
-    
+
+    public NettyConfig getNetty() {
+        return netty;
+    }
+
+    public void setNetty(NettyConfig netty) {
+        this.netty = netty;
+        if(netty != null) {
+            netty.setRoot(this);
+        }
+    }
+
+    public BrokerConfig getBroker() {
+        return broker;
+    }
+
+    public void setBroker(BrokerConfig broker) {
+        this.broker = broker;
+    }
 }

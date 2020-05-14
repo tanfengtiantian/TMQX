@@ -1,7 +1,14 @@
 package org.tmqx.broker;
 
-import org.tmqx.boot.ServiceManager;
-import org.tmqx.common.config.SnifferConfigInitializer;
+import org.tmqx.common.config.ApplicationConfig;
+import org.tmqx.core.SnifferConfigInitializer;
+import org.tmqx.core.boot.ServiceManager;
+import org.tmqx.common.config.BrokerConfig;
+import org.tmqx.common.config.NettyConfig;
+import org.tmqx.core.plugin.PluginBootstrap;
+import org.tmqx.core.plugin.PluginProtocol;
+
+import java.util.Map;
 
 public class BrokerStartup {
 
@@ -19,16 +26,25 @@ public class BrokerStartup {
         // 初始化 配置CommandLine
 
         //初始化 配置文件
-        SnifferConfigInitializer.initialize();
+        ApplicationConfig config = SnifferConfigInitializer.INSTANCE.initialize();
+        BrokerConfig brokerConfig = config.getBroker();
+        NettyConfig nettyConfig = config.getNetty();
         // 加载插件
-        //pluginFinder = new PluginFinder(new PluginBootstrap().loadPlugins());
+        PluginBootstrap plugin = new PluginBootstrap();
+        Map<String, PluginProtocol> mapPlugin = plugin.loadPlugins(config);
+
         // 初始化 服务管理
         ServiceManager.INSTANCE.boot();
 
-        Runtime.getRuntime().addShutdownHook(new Thread(() ->
-                ServiceManager.INSTANCE.shutdown(),
-                "Broker service shutdown thread")
-        );
+        BrokerController brokerController = new BrokerController(brokerConfig, nettyConfig, mapPlugin);
+        brokerController.start();
+
+
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            brokerController.shutdown();
+            plugin.destroy();
+            ServiceManager.INSTANCE.shutdown();
+        }, "broker service shutdown thread"));
 
     }
 }

@@ -24,11 +24,44 @@
         <dependency>
             <groupId>org.tmqx</groupId>
             <artifactId>tmqx-common</artifactId>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.tmqx</groupId>
             <artifactId>tmqx-core</artifactId>
+            <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.tmqx</groupId>
+            <artifactId>tmqx-remoting</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
     </dependencies>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

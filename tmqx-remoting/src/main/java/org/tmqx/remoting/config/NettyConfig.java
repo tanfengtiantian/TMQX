@@ -1,8 +1,6 @@
 package org.tmqx.remoting.config;
 
-import org.tmqx.common.config.RemotingConfig;
-
-public class NettyConfig extends RemotingConfig {
+public class NettyConfig {
 
     private int selectorThreadNum = 3;
     private int ioThreadNum = 8;

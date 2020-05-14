@@ -1,0 +1,15 @@
+name: "TMQX"
+broker:
+  tmqxHome: "/home"
+netty:
+  tcpPort: 1883
+plugins:
+  - name: "mqtt"
+    activation: true
+    properties:
+      mqtt.pool.coreThreadNum: 2
+      mqtt.pool.keepAliveTime: 60000
+      mqtt.pool.queueCapacity: 1000
+      mqtt.pool.maxBlockQueueSize: 1000
+      mqtt.pool.maxBytesInMessage: 524288
+  - name: "tmq"

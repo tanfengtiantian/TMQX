@@ -11,6 +11,12 @@
 
     <artifactId>tmqx-plugins</artifactId>
     <version>1.0.0</version>
+    <dependencies>
+        <dependency>
+            <groupId>org.tmqx</groupId>
+            <artifactId>tmqx-core</artifactId>
+        </dependency>
+    </dependencies>
     <packaging>pom</packaging>
 
     <properties>
@@ -19,5 +25,6 @@
 
     <modules>
         <module>mqtt</module>
+	    <module>tmq</module>
     </modules>
 </project>

@@ -15,7 +15,7 @@
         <module>tmqx-common</module>
 	    <module>tmqx-cluster</module>
         <module>tmqx-plugins</module>
-        <module>tmqx-distribution</module>
+        <module>tmqx-deploy</module>
         <module>tmqx-example</module>
     </modules>
 
@@ -34,6 +34,7 @@
         <netty.version>4.1.42.Final</netty.version>
         <rocksdb.version>5.17.2</rocksdb.version>
         <fastjson.version>1.2.54</fastjson.version>
+        <zkclient.version>2.1.2</zkclient.version>
         <snakeyaml.version>1.26</snakeyaml.version>
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -55,7 +56,12 @@
                 <artifactId>tmqx-core</artifactId>
                 <version>${version}</version>
             </dependency>
-            <!--
+            <dependency>
+                <groupId>org.tmqx</groupId>
+                <artifactId>tmqx-remoting</artifactId>
+                <version>${version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.tmqx</groupId>
                 <artifactId>tmqx-broker</artifactId>
@@ -67,23 +73,36 @@
                 <version>${version}</version>
             </dependency>
 
-
             <dependency>
                 <groupId>org.tmqx</groupId>
                 <artifactId>tmqx-plugins</artifactId>
                 <version>${version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.tmqx</groupId>
-                <artifactId>tmqx-remoting</artifactId>
+                <artifactId>mqtt</artifactId>
                 <version>${version}</version>
             </dependency>
-            -->
+
+            <dependency>
+                <groupId>org.tmqx</groupId>
+                <artifactId>tmq</artifactId>
+                <version>${version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.yaml</groupId>
                 <artifactId>snakeyaml</artifactId>
                 <version>${snakeyaml.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.github.adyliu</groupId>
+                <artifactId>zkclient</artifactId>
+                <version>${zkclient.version}</version>
+            </dependency>
+
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
